@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/pattern"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="(text)"
+            android:hint="@string/find_fragment_pattern_hint"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/replace_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="_$0_"
+            android:hint="@string/replace_fragment_replaceTo_hint"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:textIsSelectable="true"
+            android:inputType="textMultiLine"
+            android:text="@string/find_fragment_message" />
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:textIsSelectable="true"
+            android:inputType="textMultiLine"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/statistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

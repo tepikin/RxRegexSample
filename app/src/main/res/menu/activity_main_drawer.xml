@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_find"
+            android:icon="@drawable/ic_action_search"
+            android:title="Find" />
+        <item
+            android:id="@+id/nav_replace"
+            android:icon="@drawable/ic_action_find_replace"
+            android:title="Replace" />
+        <item
+            android:id="@+id/nav_replace_in_file"
+            android:icon="@drawable/ic_action_find_replace"
+            android:title="Replace in file" />
+        <item
+            android:id="@+id/nav_view_file"
+            android:icon="@drawable/ic_action_insert_drive_file"
+            android:title="View file" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_action_send"
+                android:title="Send" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_action_settings_gray"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_action_share"
+                android:title="Share" />
+
+            <item
+                android:id="@+id/nav_email"
+                android:icon="@drawable/ic_action_email"
+                android:title="Email" />
+        </menu>
+    </item>
+
+</menu>

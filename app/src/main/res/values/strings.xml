@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Regexp</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_change_file">Choose file</string>
+
+
+
+    <string name="find_fragment_flag_case_insensitive">Case insensitive</string>
+    <string name="find_fragment_flag_comments">Comments</string>
+    <string name="find_fragment_flag_dotall">Dotall</string>
+    <string name="find_fragment_flag_literal">Literal</string>
+    <string name="find_fragment_flag_multiline">Multiline</string>
+    <string name="find_fragment_flag_unicode_case">Unicode_case</string>
+    <string name="find_fragment_flag_unix_lines">Unix lines</string>
+
+    <string name="find_fragment_message">Long text for test pattern \nsome additional text \n1234567890 ab@ab.ru +7 (989) 989 98-89</string>
+    <string name="find_fragment_pattern_hint">Pattern</string>
+
+    <string name="replace_fragment_replaceTo_hint">Replace text</string>
+
+    <string name="view_fragment_no_application_for_view">Install any file manager</string>
+    <string name="support_email">lazardtepikin@gmail.com</string>
+    <string name="share_message">Regexp </string>
+    <string name="support_subject">Support Regexp</string>
+    <string name="support_choicer">Send support email...</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_filters"
+        android:orderInCategory="99"
+        android:icon="@drawable/ic_action_settings"
+        android:title="Flags"
+        app:showAsAction="always">
+        <menu>
+            <group android:checkableBehavior="all">
+                <item android:id="@+id/action_filter_case_insensitive" android:title="@string/find_fragment_flag_case_insensitive" />
+                <item android:id="@+id/action_filter_comments" android:title="@string/find_fragment_flag_comments" />
+                <item android:id="@+id/action_filter_dotall" android:title="@string/find_fragment_flag_dotall" />
+                <item android:id="@+id/action_filter_literal" android:title="@string/find_fragment_flag_literal" />
+                <item android:id="@+id/action_filter_multiline" android:title="@string/find_fragment_flag_multiline" />
+                <item android:id="@+id/action_filter_unicode_case" android:title="@string/find_fragment_flag_unicode_case" />
+                <item android:id="@+id/action_filter_unix_lines" android:title="@string/find_fragment_flag_unix_lines" />
+            </group>
+        </menu>
+
+    </item>
+</menu>
