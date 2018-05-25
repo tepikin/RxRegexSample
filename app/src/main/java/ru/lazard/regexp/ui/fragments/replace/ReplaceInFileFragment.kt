@@ -62,8 +62,8 @@ class ReplaceInFileFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        pattern!!.setText(regexManager.regex)
-        replace_to!!.setText(regexManager.replacement)
+        pattern.setText(regexManager.regex)
+        replace_to.setText(regexManager.replacement)
 
         val selectedFile = selectedFileManager.selectedFile
         if (selectedFile != null) {
@@ -73,17 +73,17 @@ class ReplaceInFileFragment : BaseFragment() {
 
         RxTextView.afterTextChangeEvents(pattern)
                 .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .map<String> { event -> event.editable()!!.toString() }
+                .map<String?> { event -> event?.editable()?.toString()?:"" }
                 .distinctUntilChanged()
-                .subscribe ({  regexManager.regex = it?:"" })
-                { it.printStackTrace();statistic.text = "error: " + it.message }
+                .subscribe ({  regexManager.regex = it?:"" },
+                { it.printStackTrace();statistic.text = "error: " + it.message })
 
         RxTextView.afterTextChangeEvents(replace_to)
                 .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .map<String> { event -> event.editable()!!.toString() }
+                .map<String?> { event -> event?.editable()?.toString()?:"" }
                 .distinctUntilChanged()
-                .subscribe ({  regexManager.replacement = it?:"" })
-                {it.printStackTrace(); statistic.text = "error: " +it.message }
+                .subscribe ({  regexManager.replacement = it?:"" },
+                {it.printStackTrace(); statistic.text = "error: " +it.message })
 
         Observable.merge(
                 Observable.just(Any()),

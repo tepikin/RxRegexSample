@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Regexp.iml" filepath="$PROJECT_DIR$/Regexp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RxRegexSample.iml" filepath="$PROJECT_DIR$/RxRegexSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
