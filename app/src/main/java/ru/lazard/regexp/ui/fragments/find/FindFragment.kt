@@ -16,12 +16,14 @@ import com.trello.rxlifecycle2.android.FragmentEvent
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import ru.lazard.regexp.R
 import ru.lazard.regexp.ui.fragments.BaseFragment
 import kotlinx.android.synthetic.main.find_fragment.*
 import ru.lazard.regexp.application.regexManager
+import ru.lazard.regexp.application.selectedFileManager
 
 /**
  * Created by Egor on 01.11.2016.
@@ -30,20 +32,27 @@ import ru.lazard.regexp.application.regexManager
 class FindFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.find_fragment, container, false)
-
+    private var disposable: CompositeDisposable? = null
+    override fun onDestroyView() {
+        disposable?.dispose()
+        super.onDestroyView()
+    }
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pattern.setText(regexManager.regex ?: "")
+        disposable?.dispose()
+        disposable = CompositeDisposable()
 
+        pattern.setText(regexManager.regex ?: "")
+        disposable?.add(
          RxTextView.afterTextChangeEvents(pattern)
                 .distinctUntilChanged { event -> event.editable()!!.toString() }
                 .compose(bindUntilEvent(FragmentEvent.DESTROY)).subscribe ({
             regexManager.regex = pattern.text.toString()
         })
-        { it.printStackTrace();statistic.text = "error: " + it.message }
+        { it.printStackTrace();statistic.text = "error: " + it.message })
 
-
+        disposable?.add(
         Observable.merge(
                 Observable.just(Any()),
                 regexManager.events,
@@ -68,17 +77,17 @@ class FindFragment : BaseFragment() {
                                     {
                                         if (it.isMatched) {
                                             spannable.setSpan(BackgroundColorSpan(Color.argb(255 / 5, 0, 0, 255)), it.fromSrc, it.toSrc, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                                            message.invalidate()
+                                            message?.invalidate()
                                         }
-                                        statistic.text = "find: " + it.matchedCount
+                                        statistic?.text = "find: " + it.matchedCount
                                     }
-                                    , { throwable -> statistic.text = "error: " + throwable.message })
+                                    , { throwable -> statistic?.text = "error: " + throwable.message })
                 }
                 .scan { disposable, disposable2 ->
                     disposable.dispose()
                     disposable2
                 }.subscribe({})
-        { it.printStackTrace();statistic.text = "error: " + it.message }
+        { it.printStackTrace();statistic.text = "error: " + it.message })
 
 
     }

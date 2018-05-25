@@ -14,7 +14,7 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.trello.rxlifecycle2.android.FragmentEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.replace_fragment.*
 import ru.lazard.regexp.R
@@ -34,29 +34,31 @@ class ReplaceFragment : BaseFragment() {
         super.onDestroyView()
     }
 
-    var disposable: Disposable? = null
+    private var disposable: CompositeDisposable? = null
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        disposable?.dispose()
+        disposable = CompositeDisposable()
 
         pattern.setText(regexManager.regex)
         replace_to.setText(regexManager.replacement)
 
-        RxTextView.afterTextChangeEvents(pattern!!)
+        disposable?.add(RxTextView.afterTextChangeEvents(pattern!!)
                 .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .map<String> { event -> event.editable()!!.toString() }
                 .distinctUntilChanged()
                 .subscribe({ regex -> regexManager.regex = regex }
                 ) { it.printStackTrace();statistic.text = "error: " + it.message }
-
-        RxTextView.afterTextChangeEvents(replace_to!!)
+        )
+        disposable?.add(RxTextView.afterTextChangeEvents(replace_to!!)
                 .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .map<String> { event -> event.editable()!!.toString() }
                 .distinctUntilChanged()
                 .subscribe({ regex -> regexManager.replacement = regex }
-                ) { it.printStackTrace();statistic.text = "error: " + it.message }
+                ) { it.printStackTrace();statistic.text = "error: " + it.message })
 
-        disposable = Observable.merge(
+        disposable?.add(Observable.merge(
                 Observable.just(Any()),
                 regexManager.events,
                 RxTextView.afterTextChangeEvents(message).distinctUntilChanged { event ->
@@ -94,7 +96,7 @@ class ReplaceFragment : BaseFragment() {
                     disposable.dispose()
                     disposable2
                 }
-                .subscribe({}, { it.printStackTrace();statistic.text = "error: " + it.message })
+                .subscribe({}, { it.printStackTrace();statistic.text = "error: " + it.message }))
     }
 
 }

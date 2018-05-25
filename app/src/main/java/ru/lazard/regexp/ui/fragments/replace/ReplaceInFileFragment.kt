@@ -19,6 +19,7 @@ import com.trello.rxlifecycle2.android.FragmentEvent
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.util.NotificationLite.disposable
 import io.reactivex.schedulers.Schedulers
@@ -37,7 +38,7 @@ import java.io.File
  */
 
 class ReplaceInFileFragment : BaseFragment() {
-
+    private var disposable: CompositeDisposable? = null
     fun onApplyClick(){
         selectedFileManager.selectedFile = selectedFileManager.selectedFile?.copy(content = hugeTextView?.text.toString());
 
@@ -49,6 +50,10 @@ class ReplaceInFileFragment : BaseFragment() {
         disposableFloatinActionButtonClick?.dispose()
     }
 
+    override fun onDestroyView() {
+        disposable?.dispose()
+        super.onDestroyView()
+    }
     private var disposableFloatinActionButtonClick: Disposable? = null;
 
     override fun onAttach(context: Context?) {
@@ -61,6 +66,8 @@ class ReplaceInFileFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        disposable?.dispose()
+        disposable = CompositeDisposable()
 
         pattern.setText(regexManager.regex)
         replace_to.setText(regexManager.replacement)
@@ -70,21 +77,21 @@ class ReplaceInFileFragment : BaseFragment() {
             hugeTextView.text = selectedFile.content?:""
         }
 
-
+        disposable?.add(
         RxTextView.afterTextChangeEvents(pattern)
                 .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .map<String?> { event -> event?.editable()?.toString()?:"" }
                 .distinctUntilChanged()
                 .subscribe ({  regexManager.regex = it?:"" },
-                { it.printStackTrace();statistic.text = "error: " + it.message })
-
+                { it.printStackTrace();statistic.text = "error: " + it.message }))
+                disposable?.add(
         RxTextView.afterTextChangeEvents(replace_to)
                 .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .map<String?> { event -> event?.editable()?.toString()?:"" }
                 .distinctUntilChanged()
                 .subscribe ({  regexManager.replacement = it?:"" },
-                {it.printStackTrace(); statistic.text = "error: " +it.message })
-
+                {it.printStackTrace(); statistic.text = "error: " +it.message }))
+                disposable?.add(
         Observable.merge(
                 Observable.just(Any()),
                 selectedFileManager.rxSelectedFileChanged,
@@ -115,7 +122,7 @@ class ReplaceInFileFragment : BaseFragment() {
                 .scan { disposable, disposable2 ->
                     disposable.dispose()
                     disposable2
-                }.subscribe({}){ it.printStackTrace();statistic.text = "error: " + it.message }
+                }.subscribe({}){ it.printStackTrace();statistic.text = "error: " + it.message })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
